@@ -62,6 +62,9 @@ do
     DOWNLOAD_BYTES=$(echo -e "$STATS" | jq ".download.bytes")
 	UPLOAD_BYTES=$(echo -e "$STATS" | jq ".upload.bytes")
 
+    if [[ -z "$PACKET_LOSS" ]]; then
+        PACKET_LOSS=0
+    fi
 
 	/usr/bin/curl -s -i -XPOST -u $DBUSER:$DBPASS "http://$DBHOST:$DBPORT/write?db=$DBNAME" --data-binary "speed_test,host=$HOSTNAME downloaded_bytes=$DOWNLOAD_BYTES,uploaded_bytes=$UPLOAD_BYTES,packet_loss=$PACKET_LOSS,ip_address=$IP_ADDRESS,latency=$LATENCY,jitter=$JITTER,isp=$ISP,server_id=$SERVER_ID,server_ip=$SERVER_IP,server_host=$SERVER_HOST,interface=$INTERFACE,download_bandwidth=$DOWNLOAD_BANDWIDTH,upload_bandwidth=$UPLOAD_BANDWIDTH,timestamp=$TIMESTAMP" > /dev/null
 
